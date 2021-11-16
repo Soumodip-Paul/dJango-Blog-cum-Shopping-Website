@@ -12,13 +12,23 @@
     }
   }
 
+  .no-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
 html,
 body {
   overflow-x: hidden; /* Prevent scroll on narrow devices */
 }
 
 body {
-  padding-top: 56px;
+  padding-top: 61px;
 }
 
 @media (max-width: 991.98px) {
