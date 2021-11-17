@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['fascinated-trapezoidal-minute.glitch.me', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'kart.apps.KartConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
-    'kart'
 ]
 
 MIDDLEWARE = [
@@ -125,3 +125,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/var/www/static/',
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
