@@ -1,0 +1,24 @@
+{% extends 'kart/temp.html' %}
+{% block title %}{{title}} - Kart{% endblock %}
+{% block main %}
+{% load static %}
+<main class="container p-4 ">
+    <form class="container" action="/kart/contact/" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="yourName" class="form-label">Name</label>
+            <input name="name" type="text" class="form-control" id="yourName">
+        </div>
+        <div class="mb-3">
+            <label for="yourEmaill" class="form-label">Email address</label>
+            <input name="email" type="email" class="form-control" id="yourEmail" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label  for="your message" class="form-label">Example textarea</label>
+            <textarea name="desc" class="form-control" id="your message" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</main>
+{% endblock %}

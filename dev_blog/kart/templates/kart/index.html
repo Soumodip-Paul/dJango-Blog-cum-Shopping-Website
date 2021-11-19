@@ -1,12 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kart</title>
-</head>
-<body>
-    {{title}}
-</body>
-</html>
+{% extends 'kart/temp.html' %}
+{% block title %} {{title}} {% endblock %}
+{% block style %}
+<style>
+    main.container .carousel-indicators [data-bs-target] {
+        width: 5px;
+        height: 5px;
+        margin-right: 5px;
+        border-radius: 50rem;
+        border: 1px solid #0d6efd;
+        background: transparent;
+        transition: all .5s ease-in-out;
+    }
+
+    main.container .carousel-indicators [data-bs-target].active {
+        background: #0d6efd;
+    }
+
+    main.container .carousel-control-next:hover,
+    main.container .carousel-control-prev:hover {
+        background: #eee;
+        opacity: 0.9 !important;
+    }
+
+    main.container .carousel-control-next,
+    main.container .carousel-control-prev {
+        opacity: 0 !important;
+    }
+</style>
+{% endblock %}
+{% block main %}
+<main class="container">
+    {% for product, range, nSlides in allProduct %}
+    <h4>{{product.0.product_category}}</h4>
+    <div id="productList-{{forloop.counter}}" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#productList-{{forloop.counter}}" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 0"></button>
+            {% for i in range %}
+            <button type="button" data-bs-target="#productList-{{forloop.parentloop.counter}}" data-bs-slide-to="{{i}}"
+                aria-label="Slide {{i}}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="4000">
+                <div class="row row-cols-4 m-2">
+                    {% for item in product %}
+                    <div class="col p-0">
+                        <div class="card">
+                            <img style="height: 200px;" src="/media/{{item.product_image}}" class="card-img-top"
+                                alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title" id="name_pr{{item.id}}">{{item.product_name}}</h5>
+                                <p class="card-text">{{item.product_desc}}</p>
+                                <button class="btn btn-primary cart" id="pr{{item.id}}">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:4 and forloop.counter > 1 and not forloop.last %}
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="4000">
+                <div class="row row-cols-4 m-2">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" style="width: 3%;" type="button"
+            data-bs-target="#productList-{{forloop.counter}}" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" style="filter: invert(1);" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" style="width: 3%;" type="button"
+            data-bs-target="#productList-{{forloop.counter}}" data-bs-slide="next">
+            <span class="carousel-control-next-icon" style="filter: invert(1);" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+
+    </div>
+    {% endfor %}
+</main>
+{% endblock %}
+
+{% block script %}
+<script>
+    // product lists products, total products = sum
+    console.log('welcome to kart')
+    sum = 0
+    for (let i in products) {
+        sum += products[i].qty
+        setItems(document.getElementById("pr"+i), sum)
+    }
+    document.querySelectorAll('.cart').forEach((elem, key) => {
+        elem.addEventListener('click', () => {
+            let originalId = elem.id.substr(2)
+            if (products[originalId] === undefined) {
+                products[originalId] = {
+                    qty: 1,
+                    name: document.getElementById('name_'+elem.id).innerText
+                }
+                sum++
+            }
+            else {
+                delete products[originalId]
+                sum--
+            }
+
+            localStorage.setItem('cart', JSON.stringify(products))
+            setItems(elem, sum)
+            
+        })
+    })
+    function setItems(elem, sum) {
+        elem.innerHTML = elem.innerText.search(/add to cart/i) === 0 ? "Remove from Cart" : "Add to Cart"
+        elem.classList.toggle('btn-primary')
+        elem.classList.toggle('btn-danger')
+        document.getElementById('cart').innerText = sum
+        updatePop(sum)
+    }
+</script>
+{% endblock %}

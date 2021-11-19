@@ -1,0 +1,201 @@
+{% extends 'kart/temp.html' %}
+{% block title %}Checkout{% endblock %}
+{% block main %}
+{% load static %}
+<main class="container">
+	<div class="py-5 text-center">
+		<img class="d-block rounded-circle mx-auto mb-4" src="{% static 'favicon/android-icon-72x72.png' %}" alt=""
+			width="72" height="72">
+		<h2>Checkout form</h2>
+		<p class="lead">
+			CheckOut your selected products here. Happy Shopping.
+		</p>
+	</div>
+	<div class="row g-5">
+		<div class="col-md-5 col-lg-4 order-md-last">
+			<h4 class="d-flex justify-content-between align-items-center mb-3">
+				<span class="text-primary">Your cart</span>
+				<span class="badge bg-primary rounded-pill" id='__your_cart_numbers'>0</span>
+			</h4>
+			<ul class="list-group mb-3" id="priceList">
+				<!--li class="list-group-item d-flex justify-content-between bg-light">
+					<div class="text-success">
+						<h6 class="my-0">Promo code</h6>
+						<small>EXAMPLECODE</small>
+					</div>
+					<span class="text-success">−$5</span>
+				</li-->
+			</ul>
+
+			<form class="card p-2">
+				<div class="input-group">
+					<input name="PromoCode" type="text" class="form-control" placeholder="Promo code">
+					<button type="submit" class="btn btn-secondary">Redeem</button>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-7 col-lg-8">
+			<h4 class="mb-3">Billing address</h4>
+			<form class="needs-validation" action="/kart/checkout/" method="post">
+				{% csrf_token %}
+				<div class="row g-3">
+					<div class="col-sm-6">
+						<label for="firstName" class="form-label">First name</label>
+						<input name="fName" type="text" class="form-control" id="firstName" placeholder="" value="" required>
+						<div class="invalid-feedback">
+							Valid first name is required.
+						</div>
+					</div>
+
+					<div class="col-sm-6">
+						<label for="lastName" class="form-label">Last name</label>
+						<input name="lName" type="text" class="form-control" id="lastName" placeholder="" value="" required>
+						<div class="invalid-feedback">
+							Valid last name is required.
+						</div>
+					</div>
+
+					<!-- <div class="col-12">
+						<label for="username" class="form-label">Username</label>
+						<div class="input-group has-validation">
+							<span class="input-group-text">@</span>
+							<input name="uName" type="text" class="form-control" id="username" placeholder="Username" required>
+							<div class="invalid-feedback">
+								Your username is required.
+							</div>
+						</div>
+					</div> -->
+
+					<div class="col-12">
+						<label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
+						<input name="uEmail" type="email" class="form-control" id="email" placeholder="you@example.com">
+						<div class="invalid-feedback">
+							Please enter a valid email address for shipping updates.
+						</div>
+					</div>
+					<div class="col-12">
+						<label for="Phone" class="form-label">Phone Number</label>
+						<input name="uPhone" type="tel" class="form-control" id="Phone" placeholder="9123456780">
+						<div class="invalid-feedback">
+							Please enter a valid email address for shipping updates.
+						</div>
+					</div>
+
+					<div class="col-12">
+						<label for="address" class="form-label">Address</label>
+						<input name="address1" type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+						<div class="invalid-feedback">
+							Please enter your shipping address.
+						</div>
+					</div>
+
+					<div class="col-12">
+						<label for="address2" class="form-label">Address 2 <span
+								class="text-muted">(Optional)</span></label>
+						<input name="address2" type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+					</div>
+
+					<div class="col-md-5">
+						<label for="district" class="form-label">District</label>
+						<input name="district" type="text" class="form-control" id="district" placeholder="District">
+					</div>
+
+					<div class="col-md-4">
+						<label for="state" class="form-label">State</label>
+						<input name="state" type="text" class="form-control" id="state" placeholder="State">
+						<div class="invalid-feedback">
+							Please provide a valid State.
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<label for="pin_code" class="form-label">PIN</label>
+						<input name="pin_code" type="text" class="form-control" id="pin_code" placeholder="" required>
+						<div class="invalid-feedback">
+							PIN code required.
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="itemsJson" id="itemsJson">
+				<hr class="my-4">
+
+				<!-- <div class="form-check">
+					<input name="uAdd" type="checkbox" class="form-check-input" id="same-address">
+					<label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
+				</div> -->
+
+				<div class="form-check">
+					<input name="uInfo" type="checkbox" class="form-check-input" id="save-info">
+					<label class="form-check-label" for="save-info">Save this information for next time</label>
+				</div>
+
+				<hr class="my-4">
+
+				<button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+			</form>
+		</div>
+	</div>
+</main>
+{% endblock %}
+{% block script %}
+
+<script>
+	// console.log(products)
+	{% if success %}
+		alert(`You have successfully placed order \n your Order Id is {{order_id}} \n Keep it for tracking your orders `)
+		for (let i in products) delete products[i]
+		localStorage.clear()
+		window.location.replace('/kart/')
+	{% endif %}
+	getPrices(products)
+	async function getPrices(product_list){
+		document.getElementById("itemsJson").value = JSON.stringify(product_list)
+		if(Object.keys(product_list).length === 0) {
+			document.getElementById('__your_cart_numbers').innerText = 0
+			document.getElementById('priceList').innerHTML = 
+			`<li class='list-group-item d-flex justify-content-between'>
+				<p>There is no item in your Cart<a href="/kart" class='btn btn-primary mt-3'>Shop Now</a></p>
+			</li>`
+			return
+		}
+		const response = await fetch('/kart/price/',{
+			method: 'POST',
+			body: JSON.stringify(product_list),
+			headers: {'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value}
+		})
+		const data = await response.json()
+		sum = 0
+		for(let elem in data){
+			document.getElementById('priceList').appendChild(childElem(data[elem]))
+			sum += data[elem].price
+		}
+		document.getElementById('__your_cart_numbers').innerText = Object.keys(data).length
+		const total = document.createElement('li')
+		total.classList.add("list-group-item","d-flex","justify-content-between")
+		total.innerHTML = `
+		<span>Total (USD)</span>
+		<strong>$${sum}</strong>
+		`
+		document.getElementById('priceList').appendChild(total)
+	}
+	function childElem(elem) {
+	const ine = document.createElement('li')
+	ine.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-sm")
+	ine.innerHTML= `
+		<div>
+			<h6 class="my-0">${capitalizeFirstLetter(elem.name)}</h6>
+			<small class="text-muted">${capitalizeFirstLetter(elem.category)}</small>
+		</div>
+		<span class="text-muted">$${elem.price}</span>
+	`
+	return ine
+
+}
+
+function capitalizeFirstLetter(name){
+	return name.slice(0,1).toLocaleUpperCase() + name.substr(1)
+}
+
+</script>
+
+{% endblock %}
