@@ -41,7 +41,8 @@
 				<div class="row g-3">
 					<div class="col-sm-6">
 						<label for="firstName" class="form-label">First name</label>
-						<input name="fName" type="text" class="form-control" id="firstName" placeholder="" value="" required>
+						<input name="fName" type="text" class="form-control" id="firstName" placeholder="" value=""
+							required>
 						<div class="invalid-feedback">
 							Valid first name is required.
 						</div>
@@ -49,7 +50,8 @@
 
 					<div class="col-sm-6">
 						<label for="lastName" class="form-label">Last name</label>
-						<input name="lName" type="text" class="form-control" id="lastName" placeholder="" value="" required>
+						<input name="lName" type="text" class="form-control" id="lastName" placeholder="" value=""
+							required>
 						<div class="invalid-feedback">
 							Valid last name is required.
 						</div>
@@ -83,7 +85,8 @@
 
 					<div class="col-12">
 						<label for="address" class="form-label">Address</label>
-						<input name="address1" type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+						<input name="address1" type="text" class="form-control" id="address" placeholder="1234 Main St"
+							required>
 						<div class="invalid-feedback">
 							Please enter your shipping address.
 						</div>
@@ -92,7 +95,8 @@
 					<div class="col-12">
 						<label for="address2" class="form-label">Address 2 <span
 								class="text-muted">(Optional)</span></label>
-						<input name="address2" type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+						<input name="address2" type="text" class="form-control" id="address2"
+							placeholder="Apartment or suite">
 					</div>
 
 					<div class="col-md-5">
@@ -130,7 +134,7 @@
 				</div>
 
 				<hr class="my-4">
-
+				<input type="hidden" name="price" value="0" id="hidden_price">
 				<button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
 			</form>
 		</div>
@@ -139,62 +143,65 @@
 {% endblock %}
 {% block script %}
 
+{% if success %}
+<script>
+	alert(`You have successfully placed order \n your Order Id is {{order_id}} \n Keep it for tracking your orders `)
+	for (let i in products) delete products[i]
+	localStorage.clear()
+	window.location.replace('/kart/')
+</script>
+{% endif %}
 <script>
 	// console.log(products)
-	{% if success %}
-		alert(`You have successfully placed order \n your Order Id is {{order_id}} \n Keep it for tracking your orders `)
-		for (let i in products) delete products[i]
-		localStorage.clear()
-		window.location.replace('/kart/')
-	{% endif %}
 	getPrices(products)
-	async function getPrices(product_list){
+	async function getPrices(product_list) {
 		document.getElementById("itemsJson").value = JSON.stringify(product_list)
-		if(Object.keys(product_list).length === 0) {
+		if (Object.keys(product_list).length === 0) {
 			document.getElementById('__your_cart_numbers').innerText = 0
-			document.getElementById('priceList').innerHTML = 
-			`<li class='list-group-item d-flex justify-content-between'>
+			document.getElementById('priceList').innerHTML =
+				`<li class='list-group-item d-flex justify-content-between'>
 				<p>There is no item in your Cart<a href="/kart" class='btn btn-primary mt-3'>Shop Now</a></p>
 			</li>`
 			return
 		}
-		const response = await fetch('/kart/price/',{
+		const response = await fetch('/kart/price/', {
 			method: 'POST',
 			body: JSON.stringify(product_list),
-			headers: {'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value}
+			headers: { 'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value }
 		})
 		const data = await response.json()
 		sum = 0
-		for(let elem in data){
+		for (let elem in data) {
 			document.getElementById('priceList').appendChild(childElem(data[elem]))
 			sum += data[elem].price
 		}
 		document.getElementById('__your_cart_numbers').innerText = Object.keys(data).length
 		const total = document.createElement('li')
-		total.classList.add("list-group-item","d-flex","justify-content-between")
+		total.classList.add("list-group-item", "d-flex", "justify-content-between")
 		total.innerHTML = `
 		<span>Total (USD)</span>
 		<strong>$${sum}</strong>
 		`
 		document.getElementById('priceList').appendChild(total)
+		document.getElementById('hidden_price').value = sum
 	}
 	function childElem(elem) {
-	const ine = document.createElement('li')
-	ine.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-sm")
-	ine.innerHTML= `
+		const ine = document.createElement('li')
+		ine.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-sm")
+		ine.innerHTML = `
 		<div>
 			<h6 class="my-0">${capitalizeFirstLetter(elem.name)}</h6>
 			<small class="text-muted">${capitalizeFirstLetter(elem.category)}</small>
 		</div>
 		<span class="text-muted">$${elem.price}</span>
 	`
-	return ine
+		return ine
 
-}
+	}
 
-function capitalizeFirstLetter(name){
-	return name.slice(0,1).toLocaleUpperCase() + name.substr(1)
-}
+	function capitalizeFirstLetter(name) {
+		return name.slice(0, 1).toLocaleUpperCase() + name.substr(1)
+	}
 
 </script>
 

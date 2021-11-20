@@ -1,4 +1,6 @@
 from django.urls import path
+
+from . import payments
 from . import views
 
 urlpatterns = [
@@ -8,7 +10,8 @@ urlpatterns = [
     path('track/', views.index, name='kartTraker'),
     path('search/', views.search, name='kartSearch'),
     path('view/', views.view, name='kartView'),
-    path('checkout/', views.checkout, name='kartCheckout'),
+    path('checkout/', payments.startPayment, name='kartCheckout'),
     path('faqs/', views.index, name='kartFaqs'),
-    path('price/', views.pricing, name="kartPricing")
+    path('price/', views.pricing, name="kartPricing"),
+    path('payment/', payments.validate, name="kartPayment")
 ]

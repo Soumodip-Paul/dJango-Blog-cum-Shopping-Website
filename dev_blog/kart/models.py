@@ -10,6 +10,8 @@ class Product(models.Model):
     product_category = models.CharField(default="", max_length=30)
     product_subcategory = models.CharField(default="",max_length=50)
     date = models.DateField()
+    def __str__(self) -> str:
+        return str(self.id) + " " + self.product_name
 
 class Contact(models.Model):
     msg_id = models.AutoField(primary_key=True)
@@ -17,6 +19,8 @@ class Contact(models.Model):
     email= models.EmailField(max_length=70)
     desc = models.CharField(max_length=500)
     date = models.DateField()
+    def __str__(self) -> str:
+        return str(self.msg_id)
 
 class PlacedOrder(models.Model):
     id = models.AutoField(primary_key=True)
@@ -29,3 +33,6 @@ class PlacedOrder(models.Model):
     state = models.CharField(max_length=100)
     pin_code = models.CharField(max_length=100)
     date = models.DateField()
+    price= models.IntegerField(default=0)
+    def __str__(self) -> str:
+        return str(self.id)

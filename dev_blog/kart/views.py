@@ -4,6 +4,7 @@ from django.shortcuts import render
 from .models import PlacedOrder, Product,Contact
 from datetime import date
 from math import ceil
+from .payments import startPayment
 import json
 
 
@@ -47,17 +48,6 @@ def contact(req):
     return render(req, 'kart/contact_us.html', {'title':'Contact Us'})
 def checkout(req): 
     if req.method == 'POST' : 
-        name = req.POST.get('fName', '') +' '+ req.POST.get('lName')
-        order = req.POST.get('itemsJson', '')
-        email = req.POST.get('uEmail', '')
-        phone = req.POST.get('uPhone','')
-        address = req.POST.get('address1','') + ' ' + req.POST.get('address2')
-        district = req.POST.get('district', '')
-        state = req.POST.get('state', '')
-        pin_code = req.POST.get('pin_code', '')
-        if not name == '' and not order == '{}' and not email == '' and not phone == '' and not pin_code == '':
-            order = PlacedOrder(name=name,email=email, items_ordered=order, phone=phone, address=address,district=district,state=state,pin_code=pin_code,date=date.today()
-            )
-            order.save()
-            return render(req, 'kart/checkout.html', {'order_id': order.id, 'success': True})
+        print(req)
+        return startPayment(req)
     return render(req, 'kart/checkout.html', {'success': False})
