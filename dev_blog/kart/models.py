@@ -1,5 +1,12 @@
 from django.db import models
 
+ORDER_TYPES = [
+    ('u', 'Payment Not Done'),
+    ('f', 'Payment Failed'),
+    ('s', 'Success'),
+    ('w', 'Payment withdrawn')
+]
+
 # Create your models here.
 class Product(models.Model): 
     product_id = models.AutoField
@@ -24,6 +31,8 @@ class Contact(models.Model):
 
 class PlacedOrder(models.Model):
     id = models.AutoField(primary_key=True)
+    order_id=models.IntegerField(default=0)
+    order_status=models.CharField(default='u',choices=ORDER_TYPES, max_length=1)
     items_ordered = models.CharField(max_length=100000)
     name = models.CharField(max_length=60)
     email = models.EmailField()

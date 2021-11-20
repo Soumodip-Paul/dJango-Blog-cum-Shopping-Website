@@ -7,9 +7,9 @@
     <title>Processing payment</title>
 </head>
 <body>
-    <p>Do not refresh...</p>
-    <div id="paytm-checkoutjs"></div>
-</body>
+    
+    <div id="paytm-checkoutjs" class="container my-4"><p>Do not refresh... <br> Or Press back button</p></div>
+
 <script type="application/javascript" src="https://securegw-stage.paytm.in/merchantpgpui/checkoutjs/merchants/WorldP64425807474247.js" crossorigin="anonymous" ></script>
 <script>
   function onScriptLoad(){
@@ -34,8 +34,10 @@
       if(window.Paytm && window.Paytm.CheckoutJS){
           window.Paytm.CheckoutJS.onLoad(function excecuteAfterCompleteLoad() {
               // initialze configuration using init method 
+              console.log(1)
               window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
                   // after successfully updating configuration, invoke JS Checkout
+                  console.log(2)
                   window.Paytm.CheckoutJS.invoke();
               }).catch(function onError(error){
                   console.log("error => ",error);
@@ -43,5 +45,7 @@
           });
       } 
   }
+  onScriptLoad()
 </script>
+</body>
 </html>

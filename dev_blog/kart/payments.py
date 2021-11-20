@@ -1,4 +1,5 @@
 from random import random
+from math import ceil
 from paytmpg import LibraryConstants,MerchantProperty,UserInfo,Money,EChannelId,EnumCurrency,PaymentDetailsBuilder,Payment
 from django.shortcuts import render
 from django.shortcuts import render
@@ -23,7 +24,7 @@ def start() :
     website = "WEBSTAGING" # "YOUR_WEBSITE_NAME"
     client_id = "YOUR_CLIENT_ID_HERE" # 1
 
-    callbackUrl = "http://127.0.0.1:8000/payment" # "MERCANT_CALLBACK_URL" 
+    callbackUrl = "http://127.0.0.1:8000/kart/payment/" # "MERCANT_CALLBACK_URL" 
     MerchantProperty.set_callback_url(callbackUrl)
 
     MerchantProperty.initialize(environment, mid, key, client_id, website)
@@ -51,13 +52,13 @@ def startPayment(req) :
         state = req.POST.get('state', '')
         pin_code = req.POST.get('pin_code', '')
         if not price == 0 and not name == '' and not order == '{}' and not email == '' and not phone == '' and not pin_code == '':
-            order = PlacedOrder(name=name,email=email, items_ordered=order, phone=phone, address=address,price=price,district=district,state=state,pin_code=pin_code,date=date.today())
+            id = ceil(random()*1000000000000000 // 1)
+            order = PlacedOrder(name=name,email=email, items_ordered=order, phone=phone, address=address,price=price,district=district,state=state,pin_code=pin_code,date=date.today(), order_id=id, order_status='u')
             order.save()
             print(name,order.id)
-            id = random()*1000000000000000 // 1
             channel_id = EChannelId.WEB
             order_id = str(id)
-            txn_amount = Money(EnumCurrency.INR, "1.00")
+            txn_amount = Money(EnumCurrency.INR, str(price)+".00")
             user_info = UserInfo()
             user_info.set_cust_id(email)
             user_info.set_address(address)
@@ -75,7 +76,7 @@ def startPayment(req) :
             # Generate checksum by parameters we have
             # Find your Merchant Key in your Paytm Dashboard at https://dashboard.paytm.com/next/apikeys
             paytmChecksum = PaytmChecksum.generateSignature(paytmParams, "kbzk1DSbJiV_O3p5")
-            print("generateSignature Returns:" + str(paytmChecksum))
+            # print("generateSignature Returns:" + str(paytmChecksum))
 
             payment_details = PaymentDetailsBuilder(channel_id, order_id, txn_amount, user_info).build()
             response = Payment.createTxnToken(payment_details)
@@ -99,8 +100,9 @@ def validate(req):
 
     # Verify checksum
     # Find your Merchant Key in your Paytm Dashboard at https://dashboard.paytm.com/next/apikeys 
-    isValidChecksum = CheckSum.verify_checksum(paytmParams, "YOUR_KEY_HERE", paytmChecksum)
+    isValidChecksum = CheckSum.verifySignature(paytmParams, "kbzk1DSbJiV_O3p5", paytmChecksum)
     if isValidChecksum:
+
         return render(req, 'kart/checkout.html', {'success': True})
     else:
         return render(req, 'kart/checkout.html', {'success': False})
