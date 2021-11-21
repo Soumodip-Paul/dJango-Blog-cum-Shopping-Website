@@ -1,7 +1,7 @@
 from django.http.response import JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
-from .models import PlacedOrder, Product,Contact
+from .models import Product,Contact
 from datetime import date
 from math import ceil
 from .payments import startPayment

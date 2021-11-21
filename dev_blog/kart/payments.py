@@ -1,15 +1,14 @@
+from paytmpg import LibraryConstants,MerchantProperty,UserInfo,Money,EChannelId,EnumCurrency,PaymentDetailsBuilder,Payment
 from random import random
 from math import ceil
-from paytmpg import LibraryConstants,MerchantProperty,UserInfo,Money,EChannelId,EnumCurrency,PaymentDetailsBuilder,Payment
 from django.shortcuts import render
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-import logging
 from datetime import date
-from .models import PlacedOrder
-from kart.paytm import CheckSum
-# import checksum generation utility
+from django.utils import dateparse
+from .models import PlacedOrder,PaymentDetail
 from paytmchecksum import PaytmChecksum
+import logging
 
 def start() : 
     # For Staging 
@@ -100,9 +99,22 @@ def validate(req):
 
     # Verify checksum
     # Find your Merchant Key in your Paytm Dashboard at https://dashboard.paytm.com/next/apikeys 
-    isValidChecksum = CheckSum.verifySignature(paytmParams, "kbzk1DSbJiV_O3p5", paytmChecksum)
+    isValidChecksum = PaytmChecksum.verifySignature(paytmParams, "kbzk1DSbJiV_O3p5", paytmChecksum)
     if isValidChecksum:
-
-        return render(req, 'kart/checkout.html', {'success': True})
+        # Handle logic for successful or unsuccessful transactions later
+        id = paytmParams["ORDERID"]
+        print(paytmParams)
+        code = paytmParams["RESPCODE"]
+        order = PlacedOrder.objects.get(order_id=int(id))
+        deatils = PaymentDetail(BANKNAME=paytmParams["BANKNAME"],BANKTXNID= paytmParams["BANKTXNID"],CURRENCY=paytmParams["CURRENCY"],GATEWAYNAME=paytmParams["GATEWAYNAME"],MID=paytmParams["MID"],ORDERID=paytmParams["ORDERID"],PAYMENTMODE=paytmParams["PAYMENTMODE"],RESPCODE=paytmParams["RESPCODE"],RESPMSG=paytmParams["RESPMSG"],STATUS=paytmParams["STATUS"],TXNAMOUNT=paytmParams["TXNAMOUNT"],TXNID=paytmParams["TXNID"],TXNDATE=dateparse.parse_datetime(paytmParams["TXNDATE"])) 
+        deatils.save()
+        if code == "01":
+            order.order_status="s"
+            order.save(update_fields=['order_status'])
+            return render(req, 'kart/checkout.html', {'success': True})
+        else:
+            order.order_status="f"
+            order.save(update_fields=['order_status'])
+            return render(req, 'kart/checkout.html', {'success': False})
     else:
         return render(req, 'kart/checkout.html', {'success': False})

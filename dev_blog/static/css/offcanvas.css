@@ -22,10 +22,10 @@
     scrollbar-width: none;  /* Firefox */
   }
 
-html,
+/* html,
 body {
-  overflow-x: hidden; /* Prevent scroll on narrow devices */
-}
+  overflow-x: hidden; /* Prevent scroll on narrow devices * /
+} */
 
 body {
   padding-top: 61px;

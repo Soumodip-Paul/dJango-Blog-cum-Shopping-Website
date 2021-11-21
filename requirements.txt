@@ -1,3 +1,5 @@
 Django=3.2.9
 paytm-pg=1.0.9
 Pillow=8.4.0
+paytmchecksum=1.7.0
+paytm-pg=1.0.9

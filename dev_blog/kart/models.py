@@ -4,7 +4,8 @@ ORDER_TYPES = [
     ('u', 'Payment Not Done'),
     ('f', 'Payment Failed'),
     ('s', 'Success'),
-    ('w', 'Payment withdrawn')
+    ('w', 'Payment withdrawn'),
+    ('i', 'Incomplete Payment')
 ]
 
 # Create your models here.
@@ -45,3 +46,23 @@ class PlacedOrder(models.Model):
     price= models.IntegerField(default=0)
     def __str__(self) -> str:
         return str(self.id)
+class PaymentDetail(models.Model):
+    id = models.AutoField(primary_key=True)
+    BANKNAME=models.CharField(max_length=20)
+    BANKTXNID=models.CharField(max_length=20)
+    CURRENCY = models.CharField(max_length=4)
+    GATEWAYNAME = models.CharField(max_length=20)
+    MID = models.CharField(max_length=30)
+    ORDERID = models.CharField(max_length=30)
+    PAYMENTMODE = models.CharField(max_length=10)
+    RESPCODE = models.CharField(max_length=10)
+    RESPMSG = models.CharField(max_length=200)
+    STATUS = models.CharField(max_length=10)
+    TXNAMOUNT = models.CharField(max_length=10)
+    TXNDATE= models.DateTimeField()
+    TXNID=models.CharField(max_length=30)
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            super(PaymentDetail, self).save(*args, **kwargs)
+    def __str__(self) -> str:
+        return str(self.ORDERID)
