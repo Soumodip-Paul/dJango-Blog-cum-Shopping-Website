@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import BlogPost
 
+admin.site.site_header = "Cool Developer Admin Panel"
+admin.site.site_title = " Cool Developer Admin Portal"
+admin.site.index_title = "Welcome to Cool Developer Admin Portal"
 
 @admin.action(description='Mark selected stories as published')
 def make_published(modeladmin, request, queryset):

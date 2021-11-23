@@ -25,7 +25,7 @@ SECRET_KEY = '*f@_fjn12t+5#z4hi9#)@&hm*s$6ri1_l8o@4+s7guo(=px6(*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['fascinated-trapezoidal-minute.glitch.me', '127.0.0.1']
+ALLOWED_HOSTS = ['fascinated-trapezoidal-minute.glitch.me', '127.0.0.1', 'localhost', '192.168.1.6']
 
 
 # Application definition

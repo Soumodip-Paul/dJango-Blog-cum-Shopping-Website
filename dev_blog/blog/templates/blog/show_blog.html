@@ -5,7 +5,6 @@ Blogs - Comitra Blog
 {% endblock %}
 {% block main %}
 <main class="container mt-3">
-    <script>let elem</script>
     <h3 style="font-family: 'Roboto', sans-serif;">Search results for Blog</h3>
     <br>
     {% if length != 0 %}
@@ -18,15 +17,11 @@ Blogs - Comitra Blog
             <div class="d-flex gap-2 w-100 justify-content-between">
                 <div>
                     <h4 class="mb-3">{{blog.blog_title}}</h6>
-                        <p class="mb-0 opacity-75" id="lp{{blog.blog_id}}"></p>
+                        <p class="mb-0 opacity-75" id="lp{{blog.blog_id}}">
+                            {{blog.blog_content}}{% if blog.blog_content|length >= 50 %}...{% endif %}
+                        </p>
                 </div>
                 <small class="opacity-50 text-nowrap" id="ld{{blog.blog_id}}">{{blog.date}}</small>
-                <script>
-                    elem = document.createElement('div')
-                    elem.innerHTML = `{{blog.blog_content|safe}}`
-                    document.getElementById("lp{{blog.blog_id}}").innerText = elem.innerText.substr(0, 100).split(/\s+/).filter(elem => elem !== '').join(' ')
-                    elem.remove()
-                </script>
             </div>
         </a>
         {% endfor %}

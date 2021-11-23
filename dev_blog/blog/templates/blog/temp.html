@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="author" content="{% block author %}{% endblock %}">
     <meta name="generator" content="Hugo 0.88.1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{% block desc %}{% endblock %}">
@@ -33,9 +33,9 @@
     <link rel="stylesheet" href="/static/css/blog.css">
     <link rel="stylesheet" href="/static/css/offcanvas.css">
 
-<body class="no-scroll">
+<body class="no-scroll w-100">
 
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation">
+    <nav class="navbar navbar-expand-lg fixed-top w-100 navbar-dark bg-dark" aria-label="Main navigation">
         <div class="container-fluid">
             <a class="navbar-brand" href="/blog/">
                 <img class="me-3 rounded-pill" src="/static/favicon/favicon-96x96.png" alt="" width="36" height="36">Blog
@@ -70,7 +70,7 @@
     </nav>
     {% block main %}{% endblock %}
 
-    <footer class="row row-cols-4 py-5 my-5 px-4 border-top">
+    <footer class="row row-cols-4 w-100 py-5 my-5 px-4 border-top">
         <div class="col-md col-6">
             <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
                 <img class="bi me-2 rounded-circle" width="64" height="64" src="/static/favicon/favicon-96x96.png"

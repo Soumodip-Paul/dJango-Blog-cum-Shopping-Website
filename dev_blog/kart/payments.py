@@ -106,7 +106,7 @@ def validate(req):
         print(paytmParams)
         code = paytmParams["RESPCODE"]
         order = PlacedOrder.objects.get(order_id=int(id))
-        deatils = PaymentDetail(BANKNAME=paytmParams["BANKNAME"],BANKTXNID= paytmParams["BANKTXNID"],CURRENCY=paytmParams["CURRENCY"],GATEWAYNAME=paytmParams["GATEWAYNAME"],MID=paytmParams["MID"],ORDERID=paytmParams["ORDERID"],PAYMENTMODE=paytmParams["PAYMENTMODE"],RESPCODE=paytmParams["RESPCODE"],RESPMSG=paytmParams["RESPMSG"],STATUS=paytmParams["STATUS"],TXNAMOUNT=paytmParams["TXNAMOUNT"],TXNID=paytmParams["TXNID"],TXNDATE=dateparse.parse_datetime(paytmParams["TXNDATE"])) 
+        deatils = PaymentDetail(BANKNAME=paytmParams["BANKNAME"],BANKTXNID= paytmParams["BANKTXNID"],CURRENCY=paytmParams["CURRENCY"],GATEWAYNAME=paytmParams["GATEWAYNAME"],ORDERID=paytmParams["ORDERID"],PAYMENTMODE=paytmParams["PAYMENTMODE"],RESPCODE=paytmParams["RESPCODE"],RESPMSG=paytmParams["RESPMSG"],STATUS=paytmParams["STATUS"],TXNAMOUNT=paytmParams["TXNAMOUNT"],TXNID=paytmParams["TXNID"],TXNDATE=dateparse.parse_datetime(paytmParams["TXNDATE"])) 
         deatils.save()
         if code == "01":
             order.order_status="s"

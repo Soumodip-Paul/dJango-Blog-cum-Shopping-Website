@@ -52,7 +52,7 @@ class PaymentDetail(models.Model):
     BANKTXNID=models.CharField(max_length=20)
     CURRENCY = models.CharField(max_length=4)
     GATEWAYNAME = models.CharField(max_length=20)
-    MID = models.CharField(max_length=30)
+    # MID = models.CharField(max_length=30)
     ORDERID = models.CharField(max_length=30)
     PAYMENTMODE = models.CharField(max_length=10)
     RESPCODE = models.CharField(max_length=10)
