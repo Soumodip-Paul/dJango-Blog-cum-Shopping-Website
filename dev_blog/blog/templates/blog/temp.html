@@ -8,10 +8,12 @@
     <meta name="generator" content="Hugo 0.88.1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{% block desc %}{% endblock %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>{% block title %} {% endblock %}</title>
-    {% block style %} {% endblock %}
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/prism.css" rel="stylesheet">
+    {% block style %} {% endblock %}
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="57x57" href="/static/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/static/favicon/apple-icon-60x60.png">
@@ -33,12 +35,13 @@
     <link rel="stylesheet" href="/static/css/blog.css">
     <link rel="stylesheet" href="/static/css/offcanvas.css">
 
-<body class="no-scroll w-100">
+<body class="no-scroll">
 
     <nav class="navbar navbar-expand-lg fixed-top w-100 navbar-dark bg-dark" aria-label="Main navigation">
         <div class="container-fluid">
             <a class="navbar-brand" href="/blog/">
-                <img class="me-3 rounded-pill" src="/static/favicon/favicon-96x96.png" alt="" width="36" height="36">Blog
+                <img class="me-3 rounded-pill" src="/static/favicon/favicon-96x96.png" alt="" width="36"
+                    height="36">Blog
             </a>
             <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse"
                 aria-label="Toggle navigation">
@@ -48,23 +51,23 @@
             <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/blog">Home</a>
+                        <a class="nav-link {% block home %}{% endblock %}" aria-current="page" href="/blog">Home</a>
                     </li>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/blog/blogpost">Blogs</a>
+                        <a class="nav-link {% block blogs %}{% endblock %}" href="/blog/blogpost">Blogs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/blog/videos">Videos</a>
+                        <a class="nav-link {% block videos %}{% endblock %}" href="/blog/videos">Videos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/blog/join">Join</a>
+                        <a class="nav-link {% block join %}{% endblock %}" href="/blog/join">Join</a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-info" type="submit">Search</button>
-                    </form>
+                <form class="d-flex" action="/blog/search" method="get" id="search">
+                    <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-info" type="submit">Search</button>
+                </form>
             </div>
         </div>
     </nav>
@@ -93,11 +96,11 @@
         <div class="col-md col-6">
             <h5>Blog</h5>
             <ul class="nav flex-column">
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Search</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Join</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+                <li class="nav-item mb-2"><a href="/blog/" class="nav-link p-0 text-muted">Home</a></li>
+                <li class="nav-item mb-2"><a href="/blog/blogpost" class="nav-link p-0 text-muted">Posts</a></li>
+                <li class="nav-item mb-2"><a href="/blog/videos" class="nav-link p-0 text-muted">Videos</a></li>
+                <li class="nav-item mb-2"><a href="/blog/login" class="nav-link p-0 text-muted">Join</a></li>
+                <li class="nav-item mb-2"><a href="/blog/search" class="nav-link p-0 text-muted">Search</a></li>
             </ul>
         </div>
 
@@ -116,6 +119,7 @@
     <script src="/static/js/bootstrap.bundle.min.js"></script>
     <script src="/static/js/typed.min.js"></script>
     <script src="/static/js/offcanvas.js"></script>
+    <script src="/static/js/prism.js"></script>
     {% block script %} {% endblock %}
 </body>
 

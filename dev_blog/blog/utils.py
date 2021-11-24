@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.utils import timezone
+from bs4 import BeautifulSoup
 def pretty_date(time=False):
     """
     Get a datetime object or a int() Epoch timestamp and return a
@@ -41,3 +42,9 @@ def pretty_date(time=False):
     if day_diff < 365:
         return str(day_diff // 30) + " months ago"
     return str(day_diff // 365) + " years ago"
+
+def prettyFilter(blogs): 
+    for blog in blogs :
+        blog.date = pretty_date(blog.date)
+        blog.blog_content = BeautifulSoup(blog.blog_content,"html.parser").get_text()[:120]
+    return blogs

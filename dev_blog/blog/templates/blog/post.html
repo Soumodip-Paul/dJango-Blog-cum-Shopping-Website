@@ -7,16 +7,20 @@
 {% endblock %}
 {% block author %}
 {{author}}
+{% endblock %}{% block blogs %}
+active
 {% endblock %}
 {% block main %}
-
-<main class="container mt-5 w-100">
-    <div class="row g-5">
+<main class="container mt-0 line-numbers">
+    <div class="row g-5 p-0 m-0">
         <div class="col-md-8">
             <h2 class="pb-4 mb-4 fst-italic border-bottom">
                 {{title}}
             </h2>
             <article class="blog-post">
+                {% if image|length != 0 %}
+                <img src="/media/{{image}}" alt="post image" class="w-100 rounded-3">
+                {% endif %}
                 {{content|safe}}
             </article>
             <nav class="blog-pagination" aria-label="Pagination">
@@ -28,7 +32,8 @@
 
         <div class="col-md-4 ">
             <div>
-                <div class="pt-2 pb-1" ><!-- sticky-md-top bg-white" style="top: 3.8rem;"> -->
+                <div class="pt-2 pb-1">
+                    <!-- sticky-md-top bg-white" style="top: 3.8rem;"> -->
                     <div class="p-4 mb-3 bg-light rounded">
                         <h4 class="fst-italic">About</h4>
                         <p class="mb-0">
@@ -60,10 +65,15 @@
                 <div class="p-4">
                     <h4 class="fst-italic">Social Media</h4>
                     <ol class="list-unstyled">
-                        <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/Soumodip-Paul" class="text-decoration-none">GitHub</a></li>
-                        <li><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/soumodippaul6" class="text-decoration-none">Twitter</a></li>
-                        <li><a target="_blank" rel="noopener noreferrer" href="https://instagram.com/soumodippaul64" class="text-decoration-none">Instagram</a></li>
-                        <li><a target="_blank" rel="noopener noreferrer" href="https://linkedin.com/in/soumodip-paul-10032002" class="text-decoration-none">LinkedIn</a></li>
+                        <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/Soumodip-Paul"
+                                class="text-decoration-none">GitHub</a></li>
+                        <li><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/soumodippaul6"
+                                class="text-decoration-none">Twitter</a></li>
+                        <li><a target="_blank" rel="noopener noreferrer" href="https://instagram.com/soumodippaul64"
+                                class="text-decoration-none">Instagram</a></li>
+                        <li><a target="_blank" rel="noopener noreferrer"
+                                href="https://linkedin.com/in/soumodip-paul-10032002"
+                                class="text-decoration-none">LinkedIn</a></li>
                     </ol>
                 </div>
             </div>

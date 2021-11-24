@@ -89,3 +89,13 @@ body {
 .bg-purple {
   background-color: #6f42c1;
 }
+
+a {
+  text-decoration: none;
+}
+a.stretched-link:hover {
+  text-decoration: underline;
+}
+a.u:hover {
+  text-decoration: underline;
+}

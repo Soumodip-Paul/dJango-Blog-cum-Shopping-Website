@@ -84,7 +84,6 @@ def startPayment(req) :
 @csrf_exempt
 def validate(req):
     # import checksum generation utility
-    print('hi')
     paytmChecksum = ""
     received_data = req.POST
 
@@ -103,7 +102,6 @@ def validate(req):
     if isValidChecksum:
         # Handle logic for successful or unsuccessful transactions later
         id = paytmParams["ORDERID"]
-        print(paytmParams)
         code = paytmParams["RESPCODE"]
         order = PlacedOrder.objects.get(order_id=int(id))
         deatils = PaymentDetail(BANKNAME=paytmParams["BANKNAME"],BANKTXNID= paytmParams["BANKTXNID"],CURRENCY=paytmParams["CURRENCY"],GATEWAYNAME=paytmParams["GATEWAYNAME"],ORDERID=paytmParams["ORDERID"],PAYMENTMODE=paytmParams["PAYMENTMODE"],RESPCODE=paytmParams["RESPCODE"],RESPMSG=paytmParams["RESPMSG"],STATUS=paytmParams["STATUS"],TXNAMOUNT=paytmParams["TXNAMOUNT"],TXNID=paytmParams["TXNID"],TXNDATE=dateparse.parse_datetime(paytmParams["TXNDATE"])) 

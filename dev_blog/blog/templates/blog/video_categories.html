@@ -1,0 +1,36 @@
+{% extends 'blog/temp.html' %}
+{% block title %}
+Welcome to our videos
+{% endblock %}
+{% block videos %}active{% endblock %}
+{% block style %}
+{% endblock %}
+{% block main %}
+<main>
+	{% if categories|length != 0 %}
+	{% for category in categories %}
+	{% if forloop.counter == 1 %}
+	<h2 class="p-4 fst-italic">Start with our courses</h2>
+	<div class="row my-2 mx-2">
+		{% endif %}
+		<div class="col-lg-4 col-md-6">
+			<div class="card text-center border-0">
+				<img src="/media/{{category.category_image}}" style="width: 140px; height: 140px;"
+					class="card-img-top rounded-circle m-auto" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">{{category.category_name}}</h5>
+					<p class="card-text">{{category.category_desc}}</p>
+					<a href="/blog/videos/{{category.category_name}}" class="btn btn-primary">Start Now</a>
+				</div>
+			</div>
+		</div>
+		{% if forloop.last %}
+	</div>
+	{% endif %}
+	{% endfor %}
+	{% else %}
+
+	<h2>No Videos Available rigth now</h2>
+	{% endif %}
+</main>
+{% endblock %}
